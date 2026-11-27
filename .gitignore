@@ -1,0 +1,23 @@
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+node_modules/
+dist/
+uploads/
+ml/datasets/raw/
+ml/models/*.keras
+Thumbs.db
+
+# IDE settings
+.idea/
+
+# Local databases and generated media
+*.db
+*.sqlite
+*.sqlite3
+backend/generated_videos/

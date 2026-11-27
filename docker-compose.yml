@@ -1,0 +1,22 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: fitmotion-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: beone_sports
+      MYSQL_USER: beone_user
+      MYSQL_PASSWORD: change_me
+      MYSQL_ROOT_PASSWORD: change_root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql_data:

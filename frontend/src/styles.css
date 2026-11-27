@@ -1,0 +1,2960 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap');
+
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+:root {
+  font-family: "DM Sans", sans-serif;
+
+  color: #e7eee9;
+  background: #07120f;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+/* Saved-workout analytics */
+.history-card { margin-top: 26px; padding: 28px; background: #101f18; border: 1px solid #253b2f; border-radius: 12px; }
+.history-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 17px; }
+.history-heading h2 { margin: 7px 0 0; font-size: 24px; letter-spacing: -1px; }
+.history-list { border-top: 1px solid #2a4033; }
+.history-row { display: grid; grid-template-columns: 1.6fr .7fr .8fr auto auto; gap: 18px; align-items: center; padding: 17px 0; border-bottom: 1px solid #22362a; }
+.history-row-selected { background: rgba(210, 250, 122, .06); }
+.history-row div { display: grid; gap: 3px; }
+.history-row strong { font-size: 15px; }
+.history-row small { color: #86978b; font-size: 12px; }
+.history-select { padding: 0; color: #edf7ef; background: transparent; border: 0; text-align: left; font-weight: 700; cursor: pointer; }.history-select:hover { color: #d8fa8b; }
+.selected-workout-card { display: flex; justify-content: space-between; gap: 24px; margin-top: 22px; padding: 22px; border: 1px solid #557549; border-radius: 10px; background: #14271c; }.selected-workout-card h3 { margin: 8px 0 0; font-size: 23px; }.selected-workout-card .muted { margin: 7px 0 0; font-size: 13px; }.selected-workout-stats { display: grid; grid-template-columns: repeat(4, auto); gap: 20px; align-items: center; }.selected-workout-stats span { display: grid; gap: 4px; color: #9daf9f; font-size: 12px; white-space: nowrap; }.selected-workout-stats strong { color: #eaf4ec; font-size: 18px; }
+.history-delete { justify-self: end; color: #ffaaa2; background: transparent; border: 1px solid #75423e; border-radius: 6px; padding: 7px 10px; cursor: pointer; font-size: 12px; }.history-delete:hover { background: #3a201f; }
+.history-video { color: #d8fa8b; background: transparent; border: 1px solid #58784b; border-radius: 6px; padding: 7px 10px; cursor: pointer; font-size: 12px; white-space: nowrap; }.history-video:hover { background: #1e3626; }.video-modal { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 24px; background: rgba(0, 0, 0, .74); }.video-modal-content { width: min(900px, 100%); padding: 16px; background: #101f18; border: 1px solid #3b5845; border-radius: 12px; }.video-modal-close { display: block; margin: 0 0 12px auto; color: #e9f3eb; background: transparent; border: 0; cursor: pointer; }.saved-workout-video { display: block; width: 100%; max-height: 75vh; border-radius: 8px; background: #000; }
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+
+  background: #07120f;
+}
+
+body {
+  margin: 0;
+
+  min-width: 320px;
+  min-height: 100vh;
+
+  background: #07120f;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img,
+video {
+  max-width: 100%;
+}
+
+
+/* =========================================================
+   TEXT SELECTION
+========================================================= */
+
+::selection {
+  background: #a8c85a;
+  color: #07100c;
+}
+
+::-moz-selection {
+  background: #a8c85a;
+  color: #07100c;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #07120f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #30483a;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #496451;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header {
+  height: 82px;
+
+  max-width: 1280px;
+
+  padding: 0 48px;
+  margin: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 10px;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  letter-spacing: -0.7px;
+}
+
+.brand-mark {
+  width: 27px;
+  height: 27px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 8px;
+
+  color: #07120f;
+  background: #d2fa7a;
+
+  font-family: "Playfair Display";
+  font-weight: 600;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+
+  gap: 29px;
+
+  color: #a9b7ae;
+  font-size: 14px;
+}
+
+nav a:hover {
+  color: #fff;
+}
+
+.text-link {
+  color: #ecf1ed;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.button {
+  appearance: none;
+
+  border: 1px solid #d2fa7a;
+  border-radius: 8px;
+
+  padding: 13px 18px;
+
+  background: #d2fa7a;
+  color: #0a1712;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: #e0ff9b;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.button.small {
+  padding: 9px 15px;
+  font-size: 14px;
+}
+
+.button.ghost {
+  background: transparent;
+  color: #dfe9e2;
+  border-color: #41524a;
+}
+
+.button.ghost:hover {
+  background: #14241c;
+  border-color: #d2fa7a;
+}
+
+.button.full {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.button span {
+  margin-left: 9px;
+}
+
+
+/* =========================================================
+   COMMON
+========================================================= */
+
+.eyebrow {
+  margin: 0;
+
+  color: #c8f373;
+
+  letter-spacing: 1.7px;
+
+  font: 500 11px "DM Mono", monospace;
+}
+
+.muted {
+  color: #96a69c;
+  line-height: 1.5;
+}
+
+.error {
+  color: #ffafa5;
+
+  background: #351b1b;
+
+  padding: 10px;
+
+  border-radius: 6px;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   LANDING HERO
+========================================================= */
+
+.hero {
+  min-height: 590px;
+
+  padding: 100px max(48px, calc((100vw - 1184px) / 2));
+
+  background:
+    radial-gradient(
+      circle at 75% 38%,
+      #294235 0,
+      #0b1a14 29%,
+      #07120f 57%
+    );
+
+  position: relative;
+  overflow: hidden;
+}
+
+.hero:after {
+  content: "";
+
+  position: absolute;
+
+  width: 360px;
+  height: 360px;
+
+  border: 1px solid #55715f;
+  border-radius: 50%;
+
+  right: 9%;
+  top: 122px;
+
+  opacity: 0.4;
+
+  box-shadow:
+    0 0 0 55px rgba(114, 157, 122, 0.06),
+    0 0 0 110px rgba(114, 157, 122, 0.04);
+}
+
+.hero h1 {
+  position: relative;
+  z-index: 1;
+
+  margin: 18px 0;
+
+  font-size: clamp(54px, 8vw, 108px);
+
+  line-height: 0.91;
+
+  letter-spacing: -5px;
+}
+
+.hero h1 em,
+.statement em {
+  font-family: "Playfair Display";
+  font-weight: 500;
+}
+
+.hero > p {
+  max-width: 430px;
+
+  color: #afbeb4;
+
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.hero-actions {
+  display: flex;
+
+  gap: 12px;
+
+  margin: 32px 0;
+}
+
+.hero-proof {
+  font-size: 13px;
+  color: #a9b8ae;
+}
+
+.hero-proof span {
+  color: #d2fa7a;
+  margin-right: 8px;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.features {
+  max-width: 1184px;
+
+  margin: auto;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  padding: 86px 0;
+
+  gap: 64px;
+}
+
+.features article {
+  border-top: 1px solid #3a4a42;
+
+  padding-top: 18px;
+}
+
+.features b {
+  color: #c8f373;
+
+  font: 12px "DM Mono", monospace;
+}
+
+.features h2 {
+  font-size: 25px;
+
+  letter-spacing: -1.2px;
+
+  margin: 38px 0 12px;
+}
+
+.features p,
+.statement a {
+  color: #98a99e;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   STATEMENT
+========================================================= */
+
+.statement {
+  background: #d2fa7a;
+  color: #0b1712;
+
+  padding: 90px max(48px, calc((100vw - 1184px) / 2));
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.statement p {
+  margin: 0;
+
+  max-width: 650px;
+
+  font-size: clamp(31px, 4vw, 54px);
+
+  letter-spacing: -2px;
+
+  line-height: 1;
+}
+
+.statement a {
+  color: #17271d;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+.auth-shell {
+  min-height: 100vh;
+
+  padding: 36px;
+
+  background:
+    radial-gradient(
+      circle at 8% 15%,
+      #183326,
+      transparent 28%
+    ),
+    #07120f;
+}
+
+.auth-card {
+  width: min(100%, 490px);
+
+  margin: 70px auto;
+
+  padding: 42px;
+
+  background: #0e1c16;
+
+  border: 1px solid #263b30;
+  border-radius: 15px;
+
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+}
+
+.auth-card h1 {
+  margin: 10px 0 7px;
+
+  letter-spacing: -1.5px;
+
+  font-size: 34px;
+}
+
+.auth-card form {
+  margin-top: 30px;
+}
+
+label {
+  display: block;
+
+  margin: 16px 0;
+
+  color: #ccd8d0;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+input,
+select,
+textarea {
+  display: block;
+
+  width: 100%;
+
+  background: #0a1510;
+
+  border: 1px solid #34483b;
+
+  border-radius: 7px;
+
+  padding: 12px;
+
+  color: #f2f6f2;
+
+  margin-top: 7px;
+
+  outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #c8f373;
+}
+
+.optional {
+  font-weight: 400;
+  color: #788b7f;
+}
+
+.form-footer {
+  text-align: center;
+
+  color: #9bab9f;
+
+  font-size: 14px;
+
+  margin-top: 24px;
+}
+
+.form-footer a {
+  color: #d2fa7a;
+}
+
+.steps {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin: 28px 0 16px;
+
+  border-bottom: 1px solid #32453a;
+}
+
+.steps span {
+  display: flex;
+
+  gap: 6px;
+
+  padding-bottom: 12px;
+
+  color: #708176;
+
+  font: 12px "DM Mono", monospace;
+}
+
+.steps span.active {
+  color: #d2fa7a;
+
+  border-bottom: 2px solid #d2fa7a;
+}
+
+.steps small {
+  font: inherit;
+}
+
+.form-actions {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-top: 26px;
+}
+
+.choice-note {
+  border-left: 2px solid #c8f373;
+
+  padding: 10px 13px;
+
+  color: #9bab9f;
+
+  font-size: 13px;
+
+  background: #122318;
+}
+
+
+/* =========================================================
+   APP SHELL
+========================================================= */
+
+.app-shell {
+  width: 100%;
+
+  min-height: 100vh;
+
+  display: grid;
+
+  grid-template-columns: 250px minmax(0, 1fr);
+
+  background: #0a1712;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.app-shell > aside {
+  width: 250px;
+
+  height: 100vh;
+  min-height: 100vh;
+
+  position: sticky;
+
+  top: 0;
+
+  align-self: start;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 28px 20px;
+
+  border-right: 1px solid #253a2f;
+
+  background: #0a1712;
+
+  overflow: hidden;
+}
+
+.app-shell > aside .brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 0 10px;
+
+  margin-bottom: 55px;
+
+  flex-shrink: 0;
+}
+
+.side-label {
+  padding: 0 10px;
+
+  margin-bottom: 10px;
+
+  color: #63776a;
+
+  font: 10px "DM Mono", monospace;
+
+  letter-spacing: 1px;
+
+  flex-shrink: 0;
+}
+
+.app-shell > aside > a:not(.brand) {
+  display: flex;
+
+  align-items: center;
+
+  min-height: 44px;
+
+  margin: 3px 0;
+
+  padding: 0 10px;
+
+  border-radius: 8px;
+
+  color: #9caf9f;
+
+  font-size: 14px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+
+  flex-shrink: 0;
+}
+
+.app-shell > aside > a:not(.brand):hover {
+  color: #ffffff;
+
+  background: #14281e;
+}
+
+.app-shell > aside .nav-active {
+  background: #1a3225;
+
+  color: #d9f79c;
+}
+
+.app-shell > aside .nav-disabled {
+  color: #63776a;
+
+  cursor: default;
+
+  display: flex;
+
+  justify-content: space-between;
+}
+
+.app-shell > aside .nav-disabled:hover {
+  background: transparent;
+
+  color: #63776a;
+}
+
+.nav-disabled small {
+  color: #627468;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   SIDEBAR BOTTOM / LOGOUT
+========================================================= */
+
+.side-bottom {
+  margin-top: auto;
+
+  padding-top: 24px;
+
+  flex-shrink: 0;
+}
+
+.logout-btn {
+  width: 100%;
+
+  height: 46px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.035);
+
+  color: #81918a;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.logout-btn span:first-child {
+  font-size: 17px;
+
+  line-height: 1;
+
+  transition: transform 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 90, 90, 0.08);
+
+  border-color: rgba(255, 90, 90, 0.22);
+
+  color: #ff8c8c;
+}
+
+.logout-btn:hover span:first-child {
+  transform: translateX(3px);
+}
+
+.logout-btn:active {
+  transform: scale(0.98);
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.dashboard {
+  width: 100%;
+
+  min-width: 0;
+
+  margin: 0;
+
+  padding: 48px 48px 60px;
+
+  box-sizing: border-box;
+}
+
+.dashboard-top {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+}
+
+.dashboard-top h1 {
+  margin: 8px 0;
+
+  font-size: 42px;
+
+  letter-spacing: -2px;
+}
+
+.avatar {
+  width: 43px;
+  height: 43px;
+
+  background: #c8f373;
+
+  color: #102117;
+
+  border: 0;
+
+  border-radius: 50%;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.metric-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 16px;
+
+  margin: 48px 0 18px;
+}
+
+.metric,
+.empty-card,
+.profile-card {
+  background: #101f18;
+
+  border: 1px solid #253b2f;
+
+  border-radius: 12px;
+}
+
+.metric {
+  padding: 23px;
+}
+
+.metric p {
+  font: 10px "DM Mono", monospace;
+
+  color: #839689;
+
+  letter-spacing: 1px;
+}
+
+.metric strong {
+  display: block;
+
+  font-size: 38px;
+
+  margin: 16px 0 8px;
+}
+
+.metric small {
+  color: #829286;
+}
+
+.empty-card {
+  padding: 55px;
+
+  text-align: center;
+
+  margin-top: 26px;
+}
+
+.empty-card h2 {
+  font-size: 31px;
+
+  letter-spacing: -1.5px;
+
+  margin: 12px 0;
+}
+
+.empty-card > p {
+  max-width: 500px;
+
+  margin: 0 auto 24px;
+
+  color: #96a69c;
+}
+
+.orb {
+  width: 44px;
+  height: 44px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: #274234;
+
+  color: #d2fa7a;
+
+  margin: auto;
+}
+
+.profile-card {
+  padding: 35px;
+
+  margin-top: 44px;
+}
+
+.profile-card h2 {
+  margin-top: 0;
+}
+
+.profile-card dl {
+  display: grid;
+
+  grid-template-columns: 150px 1fr;
+
+  gap: 15px;
+}
+
+.profile-card dt {
+  color: #829287;
+}
+
+.profile-card dd {
+  margin: 0;
+
+  text-transform: capitalize;
+}
+
+
+/* =========================================================
+   WORKOUT PAGE
+========================================================= */
+
+.workout-page {
+  width: 100%;
+
+  min-width: 0;
+
+  min-height: 100vh;
+
+  background: #0a1712;
+}
+
+.workout-content {
+  width: 100%;
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  padding: 45px clamp(28px, 5vw, 70px) 80px;
+}
+
+.workout-header {
+  margin-bottom: 35px;
+}
+
+.workout-header h1 {
+  margin: 8px 0 12px;
+
+  font-size: clamp(40px, 4vw, 58px);
+
+  line-height: 1;
+
+  letter-spacing: -2.5px;
+}
+
+.workout-header .muted {
+  margin: 0;
+
+  max-width: 550px;
+}
+
+
+/* =========================================================
+   EXERCISE SELECTION
+========================================================= */
+
+.exercise-select {
+  width: 100%;
+
+  max-width: 410px;
+
+  padding: 15px 16px;
+
+  margin: 0 auto 12px;
+
+  border: 1px solid #34483b;
+
+  border-radius: 10px;
+
+  background: #0a1510;
+
+  color: #f2f6f2;
+
+  font-size: 15px;
+
+  outline: none;
+
+  cursor: pointer;
+}
+
+.exercise-select:hover {
+  border-color: #526b5b;
+}
+
+.exercise-select:focus {
+  border-color: #c8f373;
+
+  box-shadow:
+    0 0 0 3px rgba(200, 243, 115, 0.08);
+}
+
+.exercise-select option {
+  background: #101f18;
+
+  color: #ffffff;
+}
+
+.selected-exercise {
+  margin: 15px auto 24px !important;
+
+  color: #718379 !important;
+
+  font-size: 13px;
+}
+
+.selected-exercise strong {
+  color: #d2fa7a;
+}
+
+
+/* =========================================================
+   WORKOUT CONTROLS
+========================================================= */
+
+.workout-controls {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 14px;
+
+  margin-top: 22px;
+}
+
+
+/* =========================================================
+   CAMERA
+========================================================= */
+
+.camera-container {
+  position: relative;
+
+  width: 100%;
+
+  max-width: 900px;
+
+  margin: 25px auto 0;
+
+  overflow: hidden;
+
+  border-radius: 16px;
+
+  background: #000;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  aspect-ratio: 16 / 9;
+}
+
+.workout-video {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  min-height: 0;
+
+  margin: 0;
+
+  object-fit: cover;
+
+  background: #000;
+
+  border: 0;
+
+  transform: scaleX(-1);
+}
+
+
+/* =========================================================
+   WORKOUT STATS
+========================================================= */
+
+.workout-stats {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 16px;
+
+  width: 100%;
+
+  max-width: 900px;
+
+  margin: 24px auto;
+}
+
+.stat-card {
+  padding: 22px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.03);
+
+  text-align: left;
+}
+
+.stat-card span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #8da096;
+
+  font-size: 11px;
+
+  letter-spacing: 0.12em;
+}
+
+.stat-card strong {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 30px;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   WORKOUT INFORMATION
+========================================================= */
+
+.workout-info {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 25px;
+
+  width: 100%;
+
+  max-width: 900px;
+
+  margin: 20px auto;
+
+  padding: 18px;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.workout-info p {
+  margin: 0;
+
+  color: #8fa096;
+
+  font-size: 13px;
+}
+
+.workout-info strong {
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   WORKOUT ERROR
+========================================================= */
+
+.workout-page .error {
+  max-width: 600px;
+
+  margin: 20px auto 0;
+
+  color: #ffafa5;
+
+  background: #351b1b;
+
+  border: 1px solid rgba(255, 100, 100, 0.2);
+
+  border-radius: 8px;
+}
+
+
+/* =========================================================
+   VIDEO ANALYSIS
+========================================================= */
+
+.video-analysis-page {
+  width: 100%;
+
+  min-width: 0;
+
+  max-width: 1180px;
+
+  margin: 0 auto;
+
+  padding: 55px clamp(28px, 5vw, 80px) 80px;
+}
+
+.video-analysis-header {
+  max-width: 900px;
+
+  margin-bottom: 42px;
+}
+
+.video-analysis-header h1 {
+  margin: 10px 0 16px;
+
+  font-size: clamp(42px, 5vw, 58px);
+
+  line-height: 1;
+
+  letter-spacing: -2.8px;
+}
+
+.video-analysis-header p {
+  max-width: 850px;
+
+  margin: 0;
+
+  font-size: 17px;
+
+  line-height: 1.7;
+
+  color: #96a69c;
+}
+
+
+/* =========================================================
+   VIDEO UPLOAD CARD
+========================================================= */
+
+.video-upload-card {
+  width: 100%;
+
+  padding: 36px;
+
+  border-radius: 20px;
+
+  background: #0d1813;
+
+  border: 1px solid #22352b;
+}
+
+
+/* =========================================================
+   VIDEO EXERCISE SELECT
+========================================================= */
+
+.video-analysis-page .exercise-select {
+  width: 100%;
+
+  max-width: 500px;
+
+  margin: 12px 0 28px;
+
+  padding: 16px 18px;
+
+  border-radius: 12px;
+
+  border: 1px solid #2a4034;
+
+  background: #0b1511;
+
+  color: #d8e2dc;
+
+  font-size: 16px;
+
+  outline: none;
+}
+
+.video-analysis-page .exercise-select:focus {
+  border-color: #d2fa7a;
+}
+
+
+/* =========================================================
+   UPLOAD BOX
+========================================================= */
+
+.upload-box {
+  width: 100%;
+
+  min-height: 250px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 35px;
+
+  border: 2px dashed #30443a;
+
+  border-radius: 18px;
+
+  background: #0a120f;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.upload-box:hover {
+  border-color: #71886f;
+
+  background: #0d1813;
+}
+
+.upload-box input {
+  display: none;
+}
+
+.upload-title {
+  margin: 0;
+
+  font-size: 21px;
+
+  font-weight: 700;
+
+  color: #d7e0db;
+}
+
+.upload-subtitle {
+  margin-top: 10px;
+
+  color: #75847c;
+}
+
+
+/* =========================================================
+   VIDEO ANALYSIS BUTTONS
+========================================================= */
+
+.primary-button {
+  width: 100%;
+
+  margin-top: 22px;
+
+  padding: 16px 22px;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  background: #d2fa7a;
+
+  color: #071009;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.primary-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  background: #e0ff9b;
+}
+
+.primary-button:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  border: 1px solid #41524a;
+
+  border-radius: 9px;
+
+  padding: 13px 24px;
+
+  background: transparent;
+
+  color: #dfe9e2;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.secondary-button:hover {
+  border-color: #d2fa7a;
+
+  color: #d2fa7a;
+}
+
+
+/* =========================================================
+   ANALYSIS LOADING
+========================================================= */
+
+.analysis-loading {
+  margin-top: 30px;
+
+  padding: 25px;
+
+  text-align: center;
+
+  color: #a8b8b1;
+}
+
+
+/* =========================================================
+   ANALYSIS ERROR
+========================================================= */
+
+.analysis-error {
+  margin-top: 20px;
+
+  padding: 16px;
+
+  border-radius: 12px;
+
+  color: #ff9b9b;
+
+  background: rgba(255, 70, 70, 0.08);
+
+  border: 1px solid rgba(255, 70, 70, 0.18);
+}
+
+
+/* =========================================================
+   ANALYZED VIDEO
+========================================================= */
+
+.analyzed-video-section {
+  margin-top: 55px;
+}
+
+.results-heading {
+  margin-bottom: 25px;
+}
+
+.results-heading h2 {
+  margin: 8px 0;
+
+  font-size: 36px;
+
+  letter-spacing: -1.5px;
+}
+
+.results-heading p {
+  color: #8d9d94;
+}
+
+.analyzed-video-container {
+  width: 100%;
+
+  overflow: hidden;
+
+  border-radius: 18px;
+
+  background: #000;
+
+  border: 1px solid #24362d;
+}
+
+.analyzed-video {
+  display: block;
+
+  width: 100%;
+
+  max-height: 680px;
+
+  object-fit: contain;
+
+  background: #000;
+}
+
+
+/* =========================================================
+   ANALYSIS RESULTS
+========================================================= */
+
+.analysis-results {
+  margin-top: 40px;
+}
+
+.result-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.result-card {
+  padding: 24px;
+
+  border-radius: 16px;
+
+  background: #0d1813;
+
+  border: 1px solid #22352b;
+}
+
+.result-card span {
+  display: block;
+
+  margin-bottom: 10px;
+
+  font-size: 11px;
+
+  letter-spacing: 1.5px;
+
+  color: #718078;
+}
+
+.result-card strong {
+  display: block;
+
+  font-size: 30px;
+
+  color: #d2fa7a;
+}
+
+
+/* =========================================================
+   ANGLE GRID
+========================================================= */
+
+.angle-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 16px;
+
+  margin-top: 16px;
+}
+
+
+/* =========================================================
+   FEEDBACK CARD
+========================================================= */
+
+.feedback-card {
+  margin-top: 20px;
+
+  padding: 30px;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.feedback-card > span {
+  font-size: 11px;
+
+  letter-spacing: 1.5px;
+
+  color: #718078;
+}
+
+.feedback-card h3 {
+  margin-top: 12px;
+
+  font-size: 22px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   ANALYSIS SUMMARY
+========================================================= */
+
+.analysis-summary {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 16px;
+
+  margin-top: 20px;
+}
+
+.analysis-summary div {
+  padding: 20px;
+
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.analysis-summary span {
+  display: block;
+
+  font-size: 12px;
+
+  color: #718078;
+}
+
+.analysis-summary strong {
+  display: block;
+
+  margin-top: 8px;
+}
+
+
+/* =========================================================
+   LIVE WORKOUT HELPERS
+========================================================= */
+
+.camera-status {
+  position: absolute;
+
+  top: 18px;
+  left: 18px;
+
+  padding: 8px 13px;
+
+  border-radius: 999px;
+
+  background: rgba(0, 0, 0, 0.72);
+
+  color: #fff;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.camera-status.detected {
+  background: rgba(20, 100, 60, 0.85);
+
+  color: #d2fa7a;
+}
+
+.analysis-status {
+  position: absolute;
+
+  top: 18px;
+  right: 18px;
+
+  padding: 8px 13px;
+
+  border-radius: 999px;
+
+  background: rgba(0, 0, 0, 0.72);
+
+  color: #d2fa7a;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   REP QUALITY
+========================================================= */
+
+.rep-quality {
+  width: 100%;
+
+  max-width: 900px;
+
+  margin: 14px auto 0;
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 14px;
+}
+
+.quality-card {
+  padding: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.quality-value {
+  margin-top: 9px;
+
+  color: #fff;
+
+  font-size: 26px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   AI FEEDBACK
+========================================================= */
+
+.ai-feedback {
+  width: 100%;
+
+  max-width: 900px;
+
+  margin: 24px auto 0;
+
+  padding: 25px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.feedback-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 20px;
+}
+
+.feedback-header h2 {
+  margin: 7px 0 0;
+
+  color: #fff;
+
+  font-size: 22px;
+
+  letter-spacing: -0.7px;
+}
+
+.feedback-score {
+  color: #d2fa7a;
+
+  font-size: 30px;
+
+  font-weight: 700;
+}
+
+.feedback-content {
+  margin-top: 20px;
+
+  padding: 18px;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 12px;
+
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.feedback-content p {
+  margin: 0;
+
+  color: #c8d4cd;
+
+  line-height: 1.6;
+}
+
+.feedback-good {
+  border-color: rgba(100, 210, 130, 0.3);
+}
+
+.feedback-good p {
+  color: #d2fa7a;
+}
+
+.feedback-warning {
+  border-color: rgba(230, 180, 70, 0.3);
+}
+
+.feedback-normal {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+
+/* =========================================================
+   RESPONSIVE - 1000PX
+========================================================= */
+
+@media (max-width: 1000px) {
+
+  .features {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .dashboard {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .workout-content {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .result-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .analysis-summary {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 800PX
+========================================================= */
+
+@media (max-width: 800px) {
+
+  .app-shell {
+    grid-template-columns: 210px minmax(0, 1fr);
+  }
+
+  .app-shell > aside {
+    width: 210px;
+
+    padding: 25px 16px;
+  }
+
+  .app-shell > aside .brand {
+    margin-bottom: 40px;
+  }
+
+  .dashboard {
+    padding: 35px 25px 50px;
+  }
+
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workout-content {
+    padding: 35px 22px 60px;
+  }
+
+  .workout-header h1 {
+    font-size: 42px;
+  }
+
+  .empty-card {
+    padding: 35px 20px;
+  }
+
+  .camera-container {
+    aspect-ratio: 4 / 3;
+  }
+
+  .workout-stats {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .workout-info {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .rep-quality {
+    grid-template-columns: 1fr;
+  }
+
+  .video-analysis-page {
+    padding: 40px 25px 60px;
+  }
+
+  .video-upload-card {
+    padding: 25px;
+  }
+
+  .result-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .angle-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 700PX
+========================================================= */
+
+@media (max-width: 700px) {
+
+  header {
+    padding: 0 22px;
+  }
+
+  nav a:not(.button):not(.text-link) {
+    display: none;
+  }
+
+
+  /* =========================
+     MOBILE APP
+  ========================= */
+
+  .app-shell {
+    display: block;
+
+    min-height: 100vh;
+  }
+
+  .app-shell > aside {
+    position: relative;
+
+    width: 100%;
+
+    height: auto;
+    min-height: auto;
+
+    display: block;
+
+    padding: 18px 18px 16px;
+
+    border-right: 0;
+
+    border-bottom: 1px solid #253a2f;
+  }
+
+  .app-shell > aside .brand {
+    margin-bottom: 18px;
+  }
+
+  .side-label {
+    display: none;
+  }
+
+  .app-shell > aside > a:not(.brand) {
+    display: inline-flex;
+
+    min-height: 38px;
+
+    margin: 2px;
+
+    padding: 0 9px;
+
+    font-size: 13px;
+  }
+
+  .app-shell > aside .nav-disabled {
+    display: none;
+  }
+
+  .side-bottom {
+    position: absolute;
+
+    right: 18px;
+    top: 18px;
+
+    margin: 0;
+    padding: 0;
+  }
+
+  .logout-btn {
+    width: 90px;
+    height: 36px;
+
+    font-size: 12px;
+  }
+
+  .dashboard {
+    padding: 35px 20px 50px;
+  }
+
+
+  /* =========================
+     HERO
+  ========================= */
+
+  .hero {
+    padding: 90px 24px;
+
+    min-height: 560px;
+  }
+
+  .hero h1 {
+    letter-spacing: -3px;
+  }
+
+
+  /* =========================
+     FEATURES
+  ========================= */
+
+  .features {
+    grid-template-columns: 1fr;
+
+    padding: 58px 24px;
+
+    gap: 30px;
+  }
+
+  .features h2 {
+    margin-top: 18px;
+  }
+
+
+  /* =========================
+     STATEMENT
+  ========================= */
+
+  .statement {
+    padding: 55px 24px;
+
+    display: block;
+  }
+
+  .statement a {
+    display: block;
+
+    margin-top: 25px;
+  }
+
+
+  /* =========================
+     AUTH
+  ========================= */
+
+  .auth-shell {
+    padding: 20px;
+  }
+
+  .auth-card {
+    padding: 27px;
+
+    margin: 45px auto;
+  }
+
+  .steps small {
+    display: none;
+  }
+
+
+  /* =========================
+     WORKOUT
+  ========================= */
+
+  .workout-content {
+    padding: 30px 18px 55px;
+  }
+
+  .workout-header h1 {
+    font-size: 40px;
+  }
+
+  .exercise-select {
+    max-width: 100%;
+  }
+
+  .empty-card {
+    padding: 30px 16px;
+  }
+
+  .camera-container {
+    aspect-ratio: 4 / 3;
+
+    border-radius: 12px;
+  }
+
+  .workout-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    text-align: center;
+  }
+
+  .workout-info {
+    gap: 12px;
+  }
+
+  .workout-controls {
+    flex-direction: column;
+  }
+
+  .workout-controls .button,
+  .workout-controls .primary-button,
+  .workout-controls .secondary-button {
+    width: 100%;
+  }
+
+
+  /* =========================
+     VIDEO ANALYSIS
+  ========================= */
+
+  .video-analysis-page {
+    padding: 35px 20px 55px;
+  }
+
+  .video-analysis-header h1 {
+    font-size: 40px;
+  }
+
+  .video-upload-card {
+    padding: 22px;
+  }
+
+  .upload-box {
+    min-height: 200px;
+
+    padding: 25px 15px;
+  }
+
+  .result-grid,
+  .angle-grid,
+  .analysis-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .feedback-header {
+    align-items: flex-start;
+  }
+
+  .feedback-score {
+    font-size: 23px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 500PX
+========================================================= */
+
+@media (max-width: 500px) {
+
+  .brand {
+    font-size: 18px;
+  }
+
+  .brand-mark {
+    width: 25px;
+    height: 25px;
+  }
+
+
+  /* =========================
+     MOBILE SIDEBAR
+  ========================= */
+
+  .app-shell > aside {
+    padding: 16px 12px 14px;
+  }
+
+  .app-shell > aside .brand {
+    padding: 0 6px;
+  }
+
+  .app-shell > aside > a:not(.brand) {
+    font-size: 12px;
+
+    padding: 0 6px;
+
+    margin: 1px;
+  }
+
+  .side-bottom {
+    right: 12px;
+    top: 16px;
+  }
+
+  .logout-btn {
+    width: 78px;
+
+    height: 34px;
+
+    font-size: 11px;
+  }
+
+  .logout-btn span:first-child {
+    font-size: 14px;
+  }
+
+
+  /* =========================
+     WORKOUT
+  ========================= */
+
+  .workout-header h1 {
+    font-size: 36px;
+  }
+
+  .camera-container {
+    aspect-ratio: 4 / 3;
+  }
+
+  .workout-video {
+    object-fit: cover;
+  }
+
+  .stat-card {
+    padding: 18px;
+  }
+
+  .stat-card strong {
+    font-size: 27px;
+  }
+
+
+  /* =========================
+     VIDEO
+  ========================= */
+
+  .video-analysis-header h1 {
+    font-size: 34px;
+  }
+
+  .results-heading h2 {
+    font-size: 30px;
+  }
+
+  .feedback-header h2 {
+    font-size: 19px;
+  }
+
+  .feedback-score {
+    font-size: 20px;
+  }
+}
+/* =========================================================
+   CUSTOM FITMOTION CURSOR
+========================================================= */
+
+.custom-cursor {
+  position: fixed;
+
+  width: 12px;
+  height: 12px;
+
+  border-radius: 50%;
+
+  background: #d2fa7a;
+
+  pointer-events: none;
+
+  z-index: 99999;
+
+  transform: translate(-50%, -50%);
+
+  box-shadow:
+    0 0 0 4px rgba(210, 250, 122, 0.12),
+    0 0 18px rgba(210, 250, 122, 0.35);
+
+  transition:
+    width 0.18s ease,
+    height 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    opacity 0.2s ease;
+}
+
+
+/* Hovering clickable elements */
+
+.custom-cursor.cursor-hover {
+  width: 32px;
+  height: 32px;
+
+  background: rgba(210, 250, 122, 0.12);
+
+  border: 1px solid #d2fa7a;
+
+  box-shadow:
+    0 0 0 6px rgba(210, 250, 122, 0.06),
+    0 0 25px rgba(210, 250, 122, 0.25);
+}
+
+
+/* Cursor when pressing */
+
+.custom-cursor.cursor-click {
+  width: 8px;
+  height: 8px;
+
+  background: #ffffff;
+}
+
+
+/* Hide on touch devices */
+
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor {
+    display: none;
+  }
+}
+/* =========================================================
+   CAMERA FULLSCREEN
+========================================================= */
+
+.camera-container {
+  position: relative;
+}
+
+.camera-fullscreen-btn {
+  position: absolute;
+
+  top: 16px;
+  right: 16px;
+
+  width: 44px;
+  height: 44px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+
+  background: rgba(0, 0, 0, 0.65);
+
+  color: #ffffff;
+
+  font-size: 23px;
+
+  cursor: pointer;
+
+  z-index: 10;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.camera-fullscreen-btn:hover {
+  background: rgba(210, 250, 122, 0.15);
+
+  color: #d2fa7a;
+
+  transform: scale(1.05);
+}
+
+
+/* Fullscreen camera */
+
+.camera-container:fullscreen {
+  width: 100vw;
+  height: 100vh;
+
+  max-width: none;
+
+  margin: 0;
+
+  border: 0;
+
+  border-radius: 0;
+
+  background: #000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-container:fullscreen .workout-video {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+
+/* Browser fullscreen fallback */
+
+.camera-container:-webkit-full-screen {
+  width: 100vw;
+  height: 100vh;
+
+  max-width: none;
+
+  margin: 0;
+
+  border-radius: 0;
+
+  background: #000;
+}
+
+.camera-container:-webkit-full-screen .workout-video {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+/* =========================================================
+   FULLSCREEN WORKOUT CAMERA
+========================================================= */
+
+.camera-container {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+
+/* =========================================================
+   REP COUNTER
+   TOP LEFT
+========================================================= */
+
+.camera-rep-overlay {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+
+  z-index: 20;
+
+  min-width: 130px;
+
+  padding: 14px 20px 16px;
+
+  border: 1px solid rgba(210, 250, 122, 0.25);
+
+  border-radius: 16px;
+
+  background: rgba(5, 15, 10, 0.78);
+
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+.camera-stat-label {
+  display: block;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+
+  color: rgba(255, 255, 255, 0.55);
+}
+
+
+.camera-rep-number {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 58px;
+
+  line-height: 1;
+
+  font-weight: 700;
+
+  letter-spacing: -0.05em;
+
+  color: #d2fa7a;
+}
+
+
+.camera-correct-reps {
+  margin-top: 8px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  font-size: 12px;
+
+  color: rgba(255, 255, 255, 0.72);
+}
+
+
+.camera-correct-reps span {
+  color: #d2fa7a;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   EXERCISE + SCORE
+   TOP RIGHT
+========================================================= */
+
+.camera-info-overlay {
+  position: absolute;
+
+  top: 24px;
+
+  right: 24px;
+
+  z-index: 20;
+
+  display: flex;
+
+  align-items: stretch;
+
+  gap: 10px;
+}
+
+
+.camera-exercise,
+.camera-score {
+  padding: 12px 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 12px;
+
+  background: rgba(5, 15, 10, 0.78);
+
+  backdrop-filter: blur(12px);
+
+  color: #fff;
+}
+
+
+.camera-exercise {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+}
+
+
+.camera-exercise strong {
+  margin-left: 4px;
+
+  font-size: 13px;
+
+  letter-spacing: 0;
+
+  color: #d2fa7a;
+}
+
+
+.camera-live-dot {
+  width: 7px;
+
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #d2fa7a;
+
+  box-shadow:
+    0 0 10px rgba(210, 250, 122, 0.8);
+}
+
+
+.camera-score {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+
+  min-width: 65px;
+}
+
+
+.camera-score span {
+  font-size: 9px;
+
+  letter-spacing: 0.12em;
+
+  color: rgba(255, 255, 255, 0.5);
+}
+
+
+.camera-score strong {
+  font-size: 24px;
+
+  line-height: 1;
+
+  color: #d2fa7a;
+}
+
+
+/* =========================================================
+   AI FEEDBACK
+   BOTTOM CENTER
+========================================================= */
+
+.camera-feedback {
+  position: absolute;
+
+  left: 50%;
+
+  bottom: 28px;
+
+  z-index: 20;
+
+  transform: translateX(-50%);
+
+  max-width: min(600px, 80%);
+
+  padding: 12px 20px;
+
+  border: 1px solid rgba(210, 250, 122, 0.25);
+
+  border-radius: 999px;
+
+  background: rgba(5, 15, 10, 0.82);
+
+  backdrop-filter: blur(12px);
+
+  color: #fff;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  text-align: center;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================================
+   FULLSCREEN BUTTON
+   BOTTOM RIGHT
+========================================================= */
+
+.camera-fullscreen-btn {
+  position: absolute;
+
+  right: 24px;
+
+  bottom: 24px;
+
+  z-index: 30;
+
+  width: 44px;
+
+  height: 44px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  border-radius: 10px;
+
+  background: rgba(0, 0, 0, 0.65);
+
+  color: #fff;
+
+  font-size: 23px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.camera-fullscreen-btn:hover {
+  background: rgba(210, 250, 122, 0.15);
+
+  color: #d2fa7a;
+
+  transform: scale(1.05);
+}
+
+
+/* =========================================================
+   FULLSCREEN MODE
+========================================================= */
+
+.camera-container:fullscreen {
+  width: 100vw;
+
+  height: 100vh;
+
+  max-width: none;
+
+  margin: 0;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 0;
+
+  background: #000;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+
+.camera-container:fullscreen .workout-video {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: contain;
+}
+
+
+/* Safari / WebKit */
+
+.camera-container:-webkit-full-screen {
+  width: 100vw;
+
+  height: 100vh;
+
+  max-width: none;
+
+  margin: 0;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 0;
+
+  background: #000;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+
+.camera-container:-webkit-full-screen .workout-video {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: contain;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .camera-rep-overlay {
+    top: 12px;
+
+    left: 12px;
+
+    min-width: 95px;
+
+    padding: 10px 14px;
+  }
+
+
+  .camera-rep-number {
+    font-size: 44px;
+  }
+
+
+  .camera-info-overlay {
+    top: 12px;
+
+    right: 12px;
+
+    gap: 6px;
+  }
+
+
+  .camera-exercise {
+    padding: 10px;
+  }
+
+
+  .camera-exercise strong {
+    font-size: 11px;
+  }
+
+
+  .camera-score {
+    padding: 10px;
+
+    min-width: 55px;
+  }
+
+
+  .camera-score strong {
+    font-size: 20px;
+  }
+
+
+  .camera-feedback {
+    bottom: 18px;
+
+    max-width: 70%;
+
+    padding: 10px 14px;
+
+    font-size: 11px;
+  }
+
+
+  .camera-fullscreen-btn {
+    right: 12px;
+
+    bottom: 12px;
+
+    width: 40px;
+
+    height: 40px;
+  }
+
+}
+
+
+/* =========================================================
+   FINAL FIX - LIVE WORKOUT OVERLAYS ONLY IN FULLSCREEN
+   Keeps the complete existing stylesheet unchanged.
+========================================================= */
+
+/* Hidden during normal camera mode */
+.camera-rep-overlay,
+.camera-info-overlay,
+.camera-feedback {
+  display: none;
+}
+
+/* Show rep counter only in fullscreen */
+.camera-container:fullscreen .camera-rep-overlay {
+  display: block;
+}
+
+/* Show exercise + score only in fullscreen */
+.camera-container:fullscreen .camera-info-overlay {
+  display: flex;
+}
+
+/* Show AI feedback only in fullscreen */
+.camera-container:fullscreen .camera-feedback {
+  display: block;
+}
+
+/* WebKit / Safari fullscreen */
+.camera-container:-webkit-full-screen .camera-rep-overlay {
+  display: block;
+}
+
+.camera-container:-webkit-full-screen .camera-info-overlay {
+  display: flex;
+}
+
+.camera-container:-webkit-full-screen .camera-feedback {
+  display: block;
+}
